@@ -19,6 +19,9 @@ import ru.mail.weather.lib.WeatherUtils;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TextView textTemperature;
+    private MyBroadcastReceiver receiver;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -35,24 +38,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startService(new Intent(WeatherService.LOAD_DATA));
-
-        final TextView text = (TextView) findViewById(R.id.textWeather);
+        textTemperature = (TextView) findViewById(R.id.textWeather);
+        receiver = new MyBroadcastReceiver();
 
         final IntentFilter filter = new IntentFilter();
         filter.addAction(WeatherService.DATA_LOADED);
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(receiver, filter);
 
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(final Context context, final Intent intent) {
-                City city = WeatherStorage.getInstance(MainActivity.this).getCurrentCity();
-                if (city == null)
-                    city = City.SPRINGFIELD;
-                Weather weather = WeatherStorage.getInstance(MainActivity.this).getLastSavedWeather(city);
-                text.setText("Temperature: " + weather.getTemperature() + "\r\n" + weather.getDescription());
-            }
-        }, filter);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startService(new Intent(WeatherService.LOAD_DATA));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(receiver);
     }
 
     @Override
@@ -65,5 +69,16 @@ public class MainActivity extends AppCompatActivity {
     private void startSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+    }
+
+    private class MyBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            City city = WeatherStorage.getInstance(MainActivity.this).getCurrentCity();
+            if (city == null)
+                city = City.SPRINGFIELD;
+            Weather weather = WeatherStorage.getInstance(MainActivity.this).getLastSavedWeather(city);
+            textTemperature.setText("Temperature: " + weather.getTemperature() + "\r\n" + weather.getDescription());
+        }
     }
 }
