@@ -25,7 +25,7 @@ public class SettingsActivity extends Activity {
 
         createButtons();
 
-        final Switch backgroundLoadingOn = (Button) findViewById(R.id.buttonLoadBackgroundOn);
+        final Button backgroundLoadingOn = (Button) findViewById(R.id.buttonLoadBackgroundOn);
         backgroundLoadingOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,8 +34,8 @@ public class SettingsActivity extends Activity {
             }
         });
 
-        final Switch backgroundLoadingOff = (Button) findViewById(R.id.buttonLoadBackgroundOff);
-        backgroundLoadingOn.setOnClickListener(new View.OnClickListener() {
+        final Button backgroundLoadingOff = (Button) findViewById(R.id.buttonLoadBackgroundOff);
+        backgroundLoadingOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 WeatherUtils.getInstance().unschedule(SettingsActivity.this, new Intent(WeatherService.LOAD_DATA));
