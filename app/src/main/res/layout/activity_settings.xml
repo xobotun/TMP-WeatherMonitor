@@ -4,20 +4,42 @@
     android:layout_height="match_parent"
     android:id="@+id/settings_root">
 
-    <Switch
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Load data in background"
-        android:id="@+id/switch1"
-        android:layout_margin="16dp"
-        android:checked="false" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Load data in background?"
+        android:id="@+id/captionBackgroundLoading"
+        android:layout_margin="16dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+
+        <Button
+            android:text="Yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="No"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonLoadBackgroundOff"
+            android:layout_weight="1" />
+    </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Select City:"
-        android:id="@+id/textView"
+        android:id="@+id/captionCityButtons"
         android:layout_margin="16dp" />
+
+
 
 </LinearLayout>
