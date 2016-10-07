@@ -13,6 +13,7 @@ import ru.mail.weather.lib.WeatherStorage;
 import ru.mail.weather.lib.WeatherUtils;
 
 public class WeatherService extends IntentService {
+
     public static final String LOAD_DATA = "ru.bmstu.tekhnopark.weathermonitor.LOAD_DATA";
     public static final String DATA_LOADED = "ru.bmstu.tekhnopark.weathermonitor.DATA_LOADED";
 
@@ -24,6 +25,7 @@ public class WeatherService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
+
             if (action.equals(LOAD_DATA)) {
                 Log.d("WeatherService", "Caught intent!");
                 City city = WeatherStorage.getInstance(WeatherService.this).getCurrentCity();

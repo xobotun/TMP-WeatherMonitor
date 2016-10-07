@@ -18,8 +18,6 @@ import ru.mail.weather.lib.WeatherUtils;
 
 public class SettingsActivity extends Activity {
 
-    private final ArrayList<Button> buttonsWithListeners = new ArrayList<>(7);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +25,7 @@ public class SettingsActivity extends Activity {
 
         createButtons();
 
-        Switch backgroundLoadingOn = (Button) findViewById(R.id.buttonLoadBackgroundOn);
+        final Switch backgroundLoadingOn = (Button) findViewById(R.id.buttonLoadBackgroundOn);
         backgroundLoadingOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -36,7 +34,7 @@ public class SettingsActivity extends Activity {
             }
         });
 
-        Switch backgroundLoadingOff = (Button) findViewById(R.id.buttonLoadBackgroundOff);
+        final Switch backgroundLoadingOff = (Button) findViewById(R.id.buttonLoadBackgroundOff);
         backgroundLoadingOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
