@@ -40,16 +40,16 @@ public class MainActivity extends AppCompatActivity {
 
         textTemperature = (TextView) findViewById(R.id.textWeather);
         receiver = new MyBroadcastReceiver();
-
-        final IntentFilter filter = new IntentFilter();
-        filter.addAction(WeatherService.DATA_LOADED);
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(receiver, filter);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+		
+		final IntentFilter filter = new IntentFilter();
+        filter.addAction(WeatherService.DATA_LOADED);
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(receiver, filter);
+		
         startService(new Intent(WeatherService.LOAD_DATA));
     }
 
