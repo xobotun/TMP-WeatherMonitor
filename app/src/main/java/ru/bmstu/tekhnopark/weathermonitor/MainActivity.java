@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textTemperature;
     private MyBroadcastReceiver receiver;
+	private IntentFilter filter;
+	private boolean isSubscribed = false;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -40,23 +42,29 @@ public class MainActivity extends AppCompatActivity {
 
         textTemperature = (TextView) findViewById(R.id.textWeather);
         receiver = new MyBroadcastReceiver();
+		filter = new IntentFilter();
+        filter.addAction(WeatherService.DATA_LOADED);
+		
+		setSubscribed(true);
+		startService(new Intent(WeatherService.LOAD_DATA));
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-		
-		final IntentFilter filter = new IntentFilter();
-        filter.addAction(WeatherService.DATA_LOADED);
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(receiver, filter);
-		
-        startService(new Intent(WeatherService.LOAD_DATA));
+    protected void onStart() {
+        super.onStart();
+		setSubscribed(true);
     }
 
+	@Override
+    protected void onResume() {
+        super.onResume();
+        startService(new Intent(WeatherService.LOAD_DATA));
+    }
+	
     @Override
     protected void onStop() {
         super.onStop();
-        LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(receiver);
+        setSubscribed(false);
     }
 
     @Override
@@ -65,6 +73,19 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
+	
+	private void setSubscribed(boolean value) {
+		if (value && !isSubscribed) {
+			isSubscribed = true;
+			LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(receiver, filter);
+			return;
+		}
+		if (!value && isSubscribed) {
+			isSubscribed = false;
+			LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(receiver);
+			return;
+		}
+	}
 
     private void startSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
